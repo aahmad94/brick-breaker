@@ -72,6 +72,9 @@
                     ballY > paddleTopEdgeY && 
                     ballY < paddleBottomEdgeY) {
                         ballSpeedY *= -1;
+                        let centerOfPaddleX = paddleX + PADDLE_WIDTH/2;
+                        let ballDistFromPaddleCenterX = ballX - centerOfPaddleX;
+                        ballSpeedX = ballDistFromPaddleCenterX * 0.35; 
                     }
             }
 
