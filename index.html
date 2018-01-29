@@ -8,9 +8,9 @@
         <canvas id="gameCanvas" width="800" height="600"></canvas>
         <script>
             let ballX = 75;
-            let ballSpeedX = 2.5;
+            let ballSpeedX = 3;
             let ballY = 75;
-            let ballSpeedY = 2.5;
+            let ballSpeedY = 3;
             let canvas, ctx;
 
             let mouseX = 0;
@@ -46,7 +46,7 @@
 
             const brickReset = () => {
                 for (let brick = 0; brick < BRICK_COLS * BRICK_ROWS; brick++) {
-                    if (0 < 0.5) {
+                    if (Math.random() < 0.5) {
                         brickGrid[brick] = true;
                     } else {
                         brickGrid[brick] = false;
@@ -70,7 +70,8 @@
                 setInterval(updateAll, 1000/framesPerSecond);
 
                 canvas.addEventListener('mousemove', updateMousePos); 
-                brickReset();               
+                brickReset();
+                // resetBall();               
             }
 
             const updateAll = () => {
@@ -82,8 +83,8 @@
                 ballX = canvas.width/2;
                 ballY = canvas.height/2;
             }
-                
-            const moveAll = () => {
+
+            const ballMove = () => {
                 ballX += ballSpeedX;
                 ballY += ballSpeedY;
                 if (ballX < 0) { // left
@@ -98,30 +99,29 @@
                 if (ballY > canvas.height) { // bottom
                     resetBall();
                 }
+            }
 
-                let paddleLeftEdgeX = paddleX;
-                let paddleRightEdgeX = paddleX + PADDLE_WIDTH ;
-                let paddleTopEdgeY = canvas.height - PADDLE_DIST_FROM_EDGE;
-                let paddleBottomEdgeY = paddleTopEdgeY + PADDLE_THICKNESS;
-
+            const ballBrickHandeling = () => {
                 let ballBrickCol = Math.floor(ballX / BRICK_W);
                 let ballBrickRow = Math.floor(ballY / BRICK_H);
                 let brickIdxUnderBall = rowColToArrIdx(ballBrickCol, ballBrickRow);
                 if (ballBrickCol >= 0 && ballBrickCol < BRICK_COLS && 
                     ballBrickRow >= 0 && ballBrickRow < BRICK_ROWS) {
-                        brickGrid[brickIdxUnderBall] = false;
-                }
-
-
-                if (ballX > paddleLeftEdgeX &&
-                    ballX < paddleRightEdgeX && 
-                    ballY > paddleTopEdgeY && 
-                    ballY < paddleBottomEdgeY) {
-                        ballSpeedY *= -1;
-                        let centerOfPaddleX = paddleX + PADDLE_WIDTH/2;
-                        let ballDistFromPaddleCenterX = ballX - centerOfPaddleX;
-                        ballSpeedX = ballDistFromPaddleCenterX * 0.35; 
+                        if (brickGrid[brickIdxUnderBall]) {
+                            brickGrid[brickIdxUnderBall] = false;
+                            ballSpeedY *= -1;
+                        }
                     }
+            }
+
+            const ballPaddleHandeling = () => {
+
+            }
+
+            const moveAll = () => {
+                ballMove();
+                ballBrickHandeling();
+                ballPaddleHandeling();
             }
 
             const drawAll = () => {
