@@ -11,7 +11,10 @@
             let ballSpeedX = 5;
             let ballY = 75;
             let ballSpeedY = 5;
-            let canvas, ctx
+            let canvas, ctx;
+
+            let mouseX = 0;
+            let mouseY = 0;
 
             const PADDLE_WIDTH = 100;
             const PADDLE_THICKNESS = 10;
@@ -21,8 +24,8 @@
             const updateMousePos = (e) => {
                 let rect = canvas.getBoundingClientRect();
                 let root = document.documentElement;                
-                let mouseX = e.clientX - rect.left - root.scrollLeft;
-                // let mouseY = e.clientY - rect - root.scrollTop;
+                mouseX = e.clientX - rect.left - root.scrollLeft;
+                mouseY = e.clientY - rect.top - root.scrollTop;
                 paddleX = mouseX - PADDLE_WIDTH/2;
             }
 
@@ -82,6 +85,7 @@
                 colorRect(0, 0, canvas.width, canvas.height, "black"); // canvas
                 colorCircle(ballX, ballY, 10, "white"); // pong ball
                 colorRect(paddleX, canvas.height - PADDLE_DIST_FROM_EDGE, PADDLE_WIDTH, PADDLE_THICKNESS, "white");
+                colorText(mouseX + ", " + mouseY, mouseX, mouseY, "yellow");
                 }
             
             const colorRect = (topLeftX, topLeftY, boxWidth, boxHeight, fillColor) => {
@@ -94,6 +98,11 @@
                 ctx.beginPath();
                 ctx.arc(centerX, centerY, radius, 0, Math.PI*2);
                 ctx.fill();
+            }
+
+            const colorText = (showWords, textX, textY, fillColor) => {
+                ctx.fillStyle = fillColor;
+                ctx.fillText(showWords, textX, textY);
             }
 
         </script>
