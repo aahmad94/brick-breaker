@@ -17,7 +17,7 @@
             let mouseY = 0;
 
             const PADDLE_WIDTH = 100;
-            const PADDLE_THICKNESS = 15;
+            const PADDLE_THICKNESS = 10;
             const PADDLE_DIST_FROM_EDGE = 60;
             let paddleX = 400;
 
@@ -139,7 +139,7 @@
                     if (isBrickAtRowCol(ballBrickCol, ballBrickRow)) {
                         brickGrid[brickIdxUnderBall] = false;
                         bricksLeft--;
-                        console.log(bricksLeft);
+                        // console.log(bricksLeft);
 
                         let prevBallX = ballX - ballSpeedX;
                         let prevBallY = ballY - ballSpeedY;
@@ -199,7 +199,7 @@
 
             const drawAll = () => {
                 colorRect(0, 0, canvas.width, canvas.height, "black"); // canvas
-                colorCircle(ballX, ballY, 10, "white"); // pong ball
+                colorCircle(ballX, ballY, 7.5, "white"); // pong ball
                 colorRect(paddleX, canvas.height - PADDLE_DIST_FROM_EDGE, PADDLE_WIDTH, PADDLE_THICKNESS, "white");
                 drawBricks();
             }
