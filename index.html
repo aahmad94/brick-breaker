@@ -3,6 +3,7 @@
     <head>
         <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
         <meta content="utf-8" http-equiv="encoding">
+        <link rel="stylesheet" type="text/css" href="styles.css">
     </head>
     <body>
         <canvas id="gameCanvas" width="800" height="600"></canvas>
@@ -12,7 +13,7 @@
             let ballY = 75;
             let ballSpeedY = 3.5;
             let canvas, ctx;
-
+            let lives = [1, 2, 3];
             let mouseX = 0;
             let mouseY = 0;
 
@@ -66,7 +67,7 @@
 
             const updateMousePos = (e) => {
                 let rect = canvas.getBoundingClientRect();
-                let root = document.documentElement;                
+                let root = document.documentElement;
                 mouseX = e.clientX - rect.left - root.scrollLeft;
                 mouseY = e.clientY - rect.top - root.scrollTop;
                 paddleX = mouseX - PADDLE_WIDTH/2;
@@ -85,9 +86,9 @@
                 let framesPerSecond = 60;
                 setInterval(updateAll, 1000/framesPerSecond);
 
-                canvas.addEventListener('mousemove', updateMousePos); 
+                canvas.addEventListener('mousemove', updateMousePos);
                 brickReset();
-                resetBall();               
+                resetBall();
             }
 
             const updateAll = () => {
@@ -109,15 +110,22 @@
                 if (ballX > canvas.width && ballSpeedX > 0.0) { // right
                     ballSpeedX *= -1;
                 }
+
                 if (ballY < 0 && ballSpeedY < 0.0) { // top
                     ballSpeedY *= -1;
                 }
+
                 if (ballY > canvas.height) { // bottom
+                    lives.shift();
                     resetBall();
-                    brickReset();
+                }
+
+                if (lives.length === 0) {
+                  lives = [1, 2, 3];
+                  brickReset();
                 }
             }
-            
+
             const isBrickAtRowCol = (col, row) => {
                 if (col >= 0 && col < BRICK_COLS &&
                     row >= 0 && row < BRICK_ROWS) {
@@ -163,9 +171,9 @@
                             ballSpeedX *= -1;
                             ballSpeedY *= -1;
                         }
-                    } 
+                    }
                 }
-                
+
             }
 
 
@@ -184,7 +192,7 @@
                     let centerOfPaddleX = paddleX + PADDLE_WIDTH / 2;
                     let ballDistFromPaddleCenterX = ballX - centerOfPaddleX;
                     ballSpeedX = ballDistFromPaddleCenterX * 0.275;
-                    
+
                     if (bricksLeft == 0) {
                         brickReset();
                     }
@@ -203,7 +211,7 @@
                 colorRect(paddleX, canvas.height - PADDLE_DIST_FROM_EDGE, PADDLE_WIDTH, PADDLE_THICKNESS, "white");
                 drawBricks();
             }
-            
+
             const colorRect = (topLeftX, topLeftY, boxWidth, boxHeight, fillColor) => {
                 ctx.fillStyle = fillColor;
                 ctx.fillRect(topLeftX, topLeftY, boxWidth, boxHeight);
