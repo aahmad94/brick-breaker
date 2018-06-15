@@ -6,6 +6,17 @@
         <link rel="stylesheet" type="text/css" href="styles.css">
     </head>
     <body>
+      <p id="ship">
+        .                  .             -)------+====+       .      </br>
+                                -)----====    ,'   ,'   .           .</br>
+                    .                  `.  `.,;___,'             .   </br>
+                                        `, |____l_\                  </br>
+                          _,....------c==]""______ |,,,,,,.....____ _</br>
+          .      .        "-:_____________  |____l_|]'''''''''''    .</br>
+                                        ,'"",'.   `.                 </br>
+              .                 -)-----====   `.   `.              . </br>
+                          .            -)-------+====+       .      .</br>
+      </p>
         <canvas id="gameCanvas" width="800" height="600"></canvas>
         <script>
             let ballX = 75;
@@ -13,7 +24,7 @@
             let ballY = 75;
             let ballSpeedY = 3.5;
             let canvas, ctx;
-            let lives = [1, 2, 3];
+            let lives = ["♥", "♥", "♥", "♥", "♥"];
             let mouseX = 0;
             let mouseY = 0;
 
@@ -41,7 +52,7 @@
                     for (let col = 0; col < BRICK_COLS; col++) {
                         let arrIdx = rowColToArrIdx(col, row);
                         if (brickGrid[arrIdx]) {
-                            colorRect(BRICK_W * col, BRICK_H * row, BRICK_W - BRICK_GAP, BRICK_H - BRICK_GAP, 'blue');
+                            colorRect(BRICK_W * col, BRICK_H * row, BRICK_W - BRICK_GAP, BRICK_H - BRICK_GAP, '#2011a2');
                         }
                     }
                 }
@@ -116,12 +127,13 @@
                 }
 
                 if (ballY > canvas.height) { // bottom
-                    lives.shift();
+                    lives.pop();
                     resetBall();
                 }
 
                 if (lives.length === 0) {
-                  lives = [1, 2, 3];
+                  alert("Nice try, play again?");
+                  lives = ["♥", "♥", "♥", "♥", "♥"];
                   brickReset();
                 }
             }
@@ -207,8 +219,9 @@
 
             const drawAll = () => {
                 colorRect(0, 0, canvas.width, canvas.height, "black"); // canvas
-                colorCircle(ballX, ballY, 7.5, "white"); // pong ball
-                colorRect(paddleX, canvas.height - PADDLE_DIST_FROM_EDGE, PADDLE_WIDTH, PADDLE_THICKNESS, "white");
+                colorCircle(ballX, ballY, 7.5, "#ff34b3"); // pong ball
+                colorRect(paddleX, canvas.height - PADDLE_DIST_FROM_EDGE, PADDLE_WIDTH, PADDLE_THICKNESS, "#00ccfd");
+                colorText(lives.join(" "), 25, 35, "24px Monospace", "#55e7ff");
                 drawBricks();
             }
 
@@ -224,8 +237,9 @@
                 ctx.fill();
             }
 
-            const colorText = (showWords, textX, textY, fillColor) => {
+            const colorText = (showWords, textX, textY, font, fillColor) => {
                 ctx.fillStyle = fillColor;
+                ctx.font = font;
                 ctx.fillText(showWords, textX, textY);
             }
 
