@@ -4,4 +4,4 @@
 
 [Live](https://aahmad94.github.io/brick-breaker/)
 
-![brick-breaker](assets/images/brick-breaker)
+![brick-breaker](assets/images/brick-breaker.gif)
